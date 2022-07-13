@@ -13,9 +13,6 @@ function [w]= srednia(obraz)
     w(1) = mean(box_r,'all');
     w(2) = mean(box_g,'all');
     w(3) = mean(box_b,'all');
-
     
-
-
 
 end
