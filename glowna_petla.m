@@ -31,7 +31,31 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
     end
     
     
-    j=1;
+%     j=1;
+%     for i=1:length(t)
+% 
+%       if mod(i,2) ~= 0
+% 
+%         wynikR_R1 = mean(wynikR(i:i+1));
+%         wynikG_G2 =  mean(wynikG(i:i+1)); 
+%         wynikB_B3 =  mean(wynikB(i:i+1)); 
+%     
+%         wynikR_R_k1 = mean(wynikR_kat(i:i+1)); 
+%         wynikG_G_k2 =  mean(wynikG_kat(i:i+1)); 
+%         wynikB_B_k3 =  mean(wynikB_kat(i:i+1)); 
+%       end
+%         
+%         wynikR_R(i) = wynikR_R1
+%         wynikG_G(i) =  wynikG_G2
+%         wynikB_B(i) =  wynikB_B3
+%     
+%         wynikR_R_k(i) = wynikR_R_k1
+%         wynikG_G_k(i) =  wynikG_G_k2
+%         wynikB_B_k(i) =  wynikB_B_k3
+%       
+%       
+%     end
+        j=1;
     for i=1:length(t)
       
         wynikR_R(i) = mean(wynikR(j:i*10));
@@ -44,7 +68,6 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
     
         j = j + seria;
     end
-    
     t0 = t(1);
     e = log2(t/t0);
     
@@ -69,7 +92,7 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
     p = anova1(arr,gr);
 
     figure()
-    plot(t,wynikR_R,'b*',t,wynikR_R_k,'r*')
+    plot(e,wynikR_R,'b.',e,wynikR_R_k,'r.')
     xlabel('Czas log_2(t/t_0)')
     ylabel('Wartość pikseli')
 
