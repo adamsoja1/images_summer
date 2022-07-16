@@ -5,9 +5,9 @@ function [w] = srednia_kat(obraz)
     g = obraz(:,:,2);
     b = obraz(:,:,3);
 
-    box_r = r(1:100,1:100);
-    box_g= g(1:100,1:100);
-    box_b = b(1:100,1:100);
+    box_r = r(1:140,1:140);
+    box_g= g(1:140,1:140);
+    box_b = b(1:140,1:140);
     
         
     w(1) = mean(box_r,'all');
