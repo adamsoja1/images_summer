@@ -101,5 +101,5 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
     plot(e,wynikR_R,'b.',e,wynikR_R_k,'r.')
     xlabel('Czas log_2(t/t_0)')
     ylabel('Wartość pikseli')
-
+%commit
 end
