@@ -10,7 +10,7 @@ seria = 10;
 %kolejna proba
 %glowna_petla(350,150,1:5:71,10,"zdj_day3")
 
-glowna_petla(2127,102,0:100:10000,1,"zdj_day5")
+%glowna_petla(2127,102,0:100:10000,1,"zdj_day5")
 
 %prad ciemny
 %glowna_petla(760,100,1:100:901,10,"zdj_day_black")
@@ -20,3 +20,7 @@ t2 = [1:10:901];
 %prad ciemny
 %glowna_petla(760,100,t2,seria,"zdj_day_black")
 
+
+
+%prad ciemny
+glowna_petla(2229,100,1:100:10000,1,'zdj_day6_black')

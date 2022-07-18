@@ -1,12 +1,15 @@
 function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
    t0 = t(2) - t(1);
-    e = log2(t/t0);
+    e = log(t/t0);
+
     figures(1)= figure();
     for i=1:ilosc
         wartosc = numer + i;
         obraz = imread(sciezka + "/IMG0" + num2str(wartosc) + ".JPG");
         w = srednia(obraz);
         plot(i,w(1),'r*',i,w(2),'g*',i,w(3),'b*')
+            ylim([0 3])
+
         title('Dla wartosci centrum 100x100')
         hold on;
         grid on;
@@ -23,6 +26,8 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
         obraz1 = imread(sciezka + "/IMG0" + num2str(wartosc1) + ".JPG");
         w_kat = srednia_kat(obraz1);
         plot(i,w_kat(1),'r*',i,w_kat(2),'g*',i,w_kat(3),'b*')
+            ylim([0 3])
+
         title('Dla wartosci lewego gornego rogu(100x100)')
         hold on;
         grid on;
@@ -37,7 +42,7 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
     plot(e,wynikR(1:length(e)),'r*', e,wynikG(1:length(e)),'g*', e,wynikB(1:length(e)),'b*')
     xlabel('Czas log_2(t/t_0)')
     ylabel('Wartość pikseli')
-    ylim([1 255])
+   
     
 %     j=1;
 %     for i=1:length(t)
