@@ -9,12 +9,12 @@ close all;
 %kolejna proba
 %glowna_petla(350,150,1:5:71,10,"zdj_day3")
 
-%glowna_petla(2127,102,0:100:10000,1,"zdj_day5")
+glowna_petla(2127,102,0:100:10000,1,"zdj_day5")
 
 %prad ciemny
 %glowna_petla(760,100,1:100:901,10,"zdj_day_black")
 
-glowna_petla(1400,706,1:2:706,2,"zdj_day4_2")
+%glowna_petla(1400,706,1:2:706,2,"zdj_day4_2")
 
 %prad ciemny
 %glowna_petla(760,100,t2,seria,"zdj_day_black")

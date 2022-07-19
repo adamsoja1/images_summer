@@ -34,6 +34,26 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
         wynikG_kat(i) = w_kat(2);
     
     end
+
+   figure();
+    for i=1:ilosc
+        wartosc2 = numer + i;
+        obraz2 = imread(sciezka + "/IMG0" + num2str(wartosc2) + ".JPG");
+        w_kat = kat_prawy(obraz2);
+        plot(i,w_kat(1),'r*',i,w_kat(2),'g*',i,w_kat(3),'b*')
+        
+
+        title('Dla wartosci lewego dolnego rogu(100x100)')
+        hold on;
+        grid on;
+        wynikR_kat(i) = w_kat(1);
+        wynikB_kat(i) = w_kat(3);
+        wynikG_kat(i) = w_kat(2);
+    
+    end
+
+
+
 %     length(e)
 %   
 %     figure()
