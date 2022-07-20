@@ -6,8 +6,9 @@ from PIL import Image
 import seaborn as sns
 import math
 
-f = nd2.ND2File('test025.nd2')
+f = nd2.ND2File('nowa_kamera_20.07/seria 2/test054.nd2')
 f = np.array(f)
+leng = len(f)
 
 def srednia(img):
     x = np.shape(img)[0]
@@ -62,15 +63,16 @@ def main(numer,ilosc,seria,sciezka,t):
     
 
 
-    
+    obrazy = []
 
     for i in range(0,len(t)):
         wartosc = numer + i
-        obraz = nd2.ND2File(f'{sciezka}/test0{wartosc}.nd2')
+        obraz = nd2.imread(f'{sciezka}/test0{wartosc}.nd2')
         obraz1 = np.array(obraz)
-        for j in range(0,10):
-            srednia_centrum.append(srednia(obraz1[j]))
-            srednia_kata.append(srednia_kat(obraz1[j]))
+        for j in range(len(obraz1)):
+            ob = obraz1[j]
+            srednia_centrum.append(srednia(ob))
+            srednia_kata.append(srednia_kat(ob))
             
     
     temp = np.array(srednia_centrum)
@@ -127,9 +129,9 @@ def main(numer,ilosc,seria,sciezka,t):
 
 
 t = [1,2,4,6,8,10,20,40,60,80,100,200,400,600,800,1000,2000,4000,6000,8000,10000]
-y = main(47,210,9,'nowa_kamera_20.07/seria 2',t)
+y = main(47,210,10,'nowa_kamera_20.07/seria 2',t)
 
-krok = 10
+krok = 8
 
 logt = map(lambda x: math.log2(x/krok),t)
 logt = list(logt)
@@ -137,13 +139,24 @@ logt = list(logt)
 
 
 plt.figure(figsize=(15,6))
-plt.scatter(y =y[2] ,x = logt,marker = '.',color = 'red')
-plt.scatter(y = y[3],x = logt,marker = '.',color = 'green')
-plt.scatter(y = y[4],x = logt,marker = '.',color = 'blue')
+plt.scatter(y =y[2] ,x = logt,marker = 'x',color = 'red')
+plt.scatter(y = y[3],x = logt,marker = 'x',color = 'green')
+plt.scatter(y = y[4],x = logt,marker = 'x',color = 'blue')
 
 
+plt.figure(figsize=(15,6))
+plt.scatter(y =y[2] ,x = logt,marker = 'x',color = 'red')
 
 
+plt.figure(figsize=(15,6))
+plt.scatter(y = y[3],x = logt,marker = 'x',color = 'green')
 
+plt.figure(figsize=(15,6))
+plt.scatter(y = y[4],x = logt,marker = 'x',color = 'blue')
+
+
+plt.figure(figsize=(15,6))
+plt.scatter(y = y[2],x = logt,marker = 'x',color = 'blue')
+plt.scatter(y = y[5],x = logt,marker = 'x',color = 'red' )
 
 
