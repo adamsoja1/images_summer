@@ -35,7 +35,7 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
     
     end
 
-   figure();
+   figures(3) = figure();
     for i=1:ilosc
         wartosc2 = numer + i;
         obraz2 = imread(sciezka + "/IMG0" + num2str(wartosc2) + ".JPG");
@@ -52,7 +52,39 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
     
     end
 
+   figures(4) = figure();
+    for i=1:ilosc
+        wartosc2 = numer + i;
+        obraz2 = imread(sciezka + "/IMG0" + num2str(wartosc2) + ".JPG");
+        w_kat = kat_prawy_do(obraz2);
+        plot(i,w_kat(1),'r*',i,w_kat(2),'g*',i,w_kat(3),'b*')
+        
 
+        title('Dla wartosci prawego gornego rogu(100x100)')
+        hold on;
+        grid on;
+        wynikR_kat(i) = w_kat(1);
+        wynikB_kat(i) = w_kat(3);
+        wynikG_kat(i) = w_kat(2);
+    
+    end
+
+   figures(5) = figure();
+    for i=1:ilosc
+        wartosc2 = numer + i;
+        obraz2 = imread(sciezka + "/IMG0" + num2str(wartosc2) + ".JPG");
+        w_kat = kat_prawy_dolny(obraz2);
+        plot(i,w_kat(1),'r*',i,w_kat(2),'g*',i,w_kat(3),'b*')
+        
+
+        title('Dla wartosci prawy dolnego rogu(100x100)')
+        hold on;
+        grid on;
+        wynikR_kat(i) = w_kat(1);
+        wynikB_kat(i) = w_kat(3);
+        wynikG_kat(i) = w_kat(2);
+    
+    end
 
 %     length(e)
 %   
@@ -101,14 +133,14 @@ function [figures] = glowna_petla(numer,ilosc,t,seria,sciezka)
 %     end
 
     
-    figures(3) = figure();
+   figure();
     plot(e,wynikR_R,'r*',e,wynikG_G,'g*',e,wynikB_B,'b*')
     xlabel('Czas log_2(t/t_0)')
     ylabel('Wartość pikseli')
     title('Wykres działania kamery mikroskopowej z zależności od czasu ekspozycji[centrum obrazow]')
     
     
-    figure(4)
+    figure()
     plot(e,wynikR_R_k,'r*',e,wynikG_G_k,'g*',e,wynikB_B_k,'b*')
     xlabel('Czas log_2(t/t_0)')
     ylabel('Wartość pikseli')
