@@ -6,9 +6,8 @@ from PIL import Image
 import seaborn as sns
 import math
 
-f = nd2.ND2File('nowa_kamera_20.07/seria 2/test054.nd2')
-f = np.array(f)
-leng = len(f)
+f = nd2.ND2File('nowa_kamera_20.07/seria 2/test068.nd2')
+
 
 def srednia(img):
     x = np.shape(img)[0]
@@ -30,6 +29,7 @@ def srednia(img):
     box_b = np.mean(box_b3)
     
     arr = [box_r,box_g,box_b]
+    
     return arr
 
 
@@ -39,14 +39,15 @@ def srednia_kat(img):
     green = img[:,:,1]
     blue = img[:,:,2]
     
-    box_r = red[1:100,1:100]
-    box_g = green[1:100,1:100]
-    box_b = blue[1:100,1:100]
+    box_r = red[1:100,len(img[1])-100:len(img[1])]
+    box_g = green[1:100,len(img[1])-100:len(img[1])]
+    box_b = blue[1:100,len(img[1])-100:len(img[1])]
     
     s1 = np.mean(box_r)
     s2 = np.mean(box_g)
     s3 = np.mean(box_b)
     arr = [s1,s2,s3]
+    
     return np.array(arr)
     
 
@@ -131,7 +132,7 @@ def main(numer,ilosc,seria,sciezka,t):
 t = [1,2,4,6,8,10,20,40,60,80,100,200,400,600,800,1000,2000,4000,6000,8000,10000]
 y = main(47,210,10,'nowa_kamera_20.07/seria 2',t)
 
-krok = 8
+krok = 2
 
 logt = map(lambda x: math.log2(x/krok),t)
 logt = list(logt)
@@ -149,14 +150,21 @@ plt.scatter(y =y[2] ,x = logt,marker = 'x',color = 'red')
 
 
 plt.figure(figsize=(15,6))
-plt.scatter(y = y[3],x = logt,marker = 'x',color = 'green')
+plt.scatter(y = y[4],x = logt,marker = 'x',color = 'green')
+
+plt.figure(figsize=(15,6))
+plt.scatter(y = y[7],x = logt,marker = 'x',color = 'blue')
+
 
 plt.figure(figsize=(15,6))
 plt.scatter(y = y[4],x = logt,marker = 'x',color = 'blue')
+plt.scatter(y = y[7],x = logt,marker = 'x',color = 'red' )
 
 
-plt.figure(figsize=(15,6))
-plt.scatter(y = y[2],x = logt,marker = 'x',color = 'blue')
-plt.scatter(y = y[5],x = logt,marker = 'x',color = 'red' )
+
+
+
+
+
 
 
