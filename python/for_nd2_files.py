@@ -7,11 +7,17 @@ import seaborn as sns
 import math
 
 f = nd2.ND2File('nowa_kamera_20.07/seria 2/test068.nd2')
+f = np.array(f)
+f2 = f[0]
+f1 = f2[:,:,1]
+leng = len(f[0])
+
+box = f1[900-100:900,1280-100:1280]
 
 
 def srednia(img):
-    x = np.shape(img)[0]
-    y = np.shape(img)[1]
+    x = np.shape(img)[1]
+    y = np.shape(img)[0]
     
     red = img[:,:,0]
     green = img[:,:,1]
@@ -33,15 +39,39 @@ def srednia(img):
     return arr
 
 
-def srednia_kat(img):
+def srednia_kat_prawyGorny(img):
+    
+    x = np.shape(img)[1]
+    y = np.shape(img)[0]
     
     red = img[:,:,0]
     green = img[:,:,1]
     blue = img[:,:,2]
     
-    box_r = red[1:100,len(img[1])-100:len(img[1])]
-    box_g = green[1:100,len(img[1])-100:len(img[1])]
-    box_b = blue[1:100,len(img[1])-100:len(img[1])]
+    box_r = red[1:100,x-100:x]
+    box_g = green[1:100,x-100:x]
+    box_b = blue[1:100,x-100:x]
+    
+    s1 = np.mean(box_r)
+    s2 = np.mean(box_g)
+    s3 = np.mean(box_b)
+    arr = [s1,s2,s3]
+    
+    return np.array(arr)
+    
+
+def srednia_kat_prawyDolny(img):
+        
+    x = np.shape(img)[1]
+    y = np.shape(img)[0]
+    
+    red = img[:,:,0]
+    green = img[:,:,1]
+    blue = img[:,:,2]
+    
+    box_r = red[y-100:y,x-100:x]
+    box_g = green[y-100:y,x-100:x]
+    box_b = blue[y-100:y,x-100:x]
     
     s1 = np.mean(box_r)
     s2 = np.mean(box_g)
@@ -53,6 +83,53 @@ def srednia_kat(img):
 
 
 
+def srednia_kat_lewyGorny(img):
+    x = np.shape(img)[1]
+    y = np.shape(img)[0]
+    
+    red = img[:,:,0]
+    green = img[:,:,1]
+    blue = img[:,:,2]
+    
+    box_r = red[1:100,1:100]
+    box_g = green[1:100,1:100]
+    box_b = blue[1:100,1:100]
+    
+    s1 = np.mean(box_r)
+    s2 = np.mean(box_g)
+    s3 = np.mean(box_b)
+    arr = [s1,s2,s3]
+    
+    return np.array(arr)
+
+
+def srednia_kat_lewyDolny(img):
+    
+    x = np.shape(img)[1]
+    y = np.shape(img)[0]
+    
+    red = img[:,:,0]
+    green = img[:,:,1]
+    blue = img[:,:,2]
+    
+    box_r = red[y-100:y,1:100]
+    box_g = green[y-100:y,1:100]
+    box_b = blue[y-100:y,1:100]
+    
+    s1 = np.mean(box_r)
+    s2 = np.mean(box_g)
+    s3 = np.mean(box_b)
+    arr = [s1,s2,s3]
+    
+    return np.array(arr)
+
+
+
+
+
+
+
+
 
 
 def main(numer,ilosc,seria,sciezka,t):
@@ -60,12 +137,12 @@ def main(numer,ilosc,seria,sciezka,t):
     iteracje = [i for i in range(1,ilosc+1)]
     
     srednia_centrum = []
-    srednia_kata = []
+    srednia_kata_prawyGorny = []
+    srednia_kata_prawyDolny= []
+    srednia_kata_lewyGorny= []
+    srednia_kata_lewyDolny = []
+
     
-
-
-    obrazy = []
-
     for i in range(0,len(t)):
         wartosc = numer + i
         obraz = nd2.imread(f'{sciezka}/test0{wartosc}.nd2')
@@ -73,59 +150,112 @@ def main(numer,ilosc,seria,sciezka,t):
         for j in range(len(obraz1)):
             ob = obraz1[j]
             srednia_centrum.append(srednia(ob))
-            srednia_kata.append(srednia_kat(ob))
-            
+            srednia_kata_prawyGorny.append(srednia_kat_prawyGorny(ob))
+            srednia_kata_prawyDolny.append(srednia_kat_prawyDolny(ob))
+            srednia_kata_lewyGorny.append(srednia_kat_lewyGorny(ob))
+            srednia_kata_lewyDolny.append(srednia_kat_lewyDolny(ob))
+    
     
     temp = np.array(srednia_centrum)
-    temp2 = np.array(srednia_kata)
+    temp2_prawyGorny = np.array(srednia_kata_prawyGorny)
+    temp2_prawyDolny = np.array(srednia_kata_prawyDolny)
+    temp2_lewyGorny = np.array(srednia_kata_lewyGorny)
+    temp2_lewyDolny = np.array(srednia_kata_lewyDolny)
+    
     centrum_r = np.array(temp[:,0])
     centrum_g = np.array(temp[:,1])
     centrum_b = np.array(temp[:,2])
     
+    kat_r_prawyGorny = np.array(temp2_prawyGorny[:,0])
+    kat_g_prawyGorny = np.array(temp2_prawyGorny[:,1])
+    kat_b_prawyGorny = np.array(temp2_prawyGorny[:,2])
+    
+    kat_r_prawyDolny = np.array(temp2_prawyDolny[:,0])
+    kat_g_prawyDolny = np.array(temp2_prawyDolny[:,1])
+    kat_b_prawyDolny = np.array(temp2_prawyDolny[:,2])
+    
+    kat_r_lewyDolny = np.array(temp2_lewyDolny[:,0])
+    kat_g_lewyDolny = np.array(temp2_lewyDolny[:,1])
+    kat_b_lewyDolny = np.array(temp2_lewyDolny[:,2])
+    
+    kat_r_lewyGorny = np.array(temp2_lewyGorny[:,0])
+    kat_g_lewyGorny = np.array(temp2_lewyGorny[:,1])
+    kat_b_lewyGorny = np.array(temp2_lewyGorny[:,2])
+    
+    
+    
+   
+    
     
     
     
     plt.figure(figsize=(15,6))
-    plt.scatter(y = centrum_r,x = iteracje,marker = '.',color = 'red')
-    plt.scatter(y = centrum_g,x = iteracje,marker = '.',color = 'green')
-    plt.scatter(y = centrum_b,x = iteracje,marker = '.',color = 'blue')
-    kat_r = np.array(temp2[:,0])
-    kat_g = np.array(temp2[:,1])
-    kat_b = np.array(temp2[:,2])
-    
-    plt.figure(figsize=(15,6))
-    plt.scatter(y = kat_r,x = iteracje,marker = '.',color = 'red')
-    plt.scatter(y = kat_g,x = iteracje,marker = '.',color = 'green')
-    plt.scatter(y = kat_b,x = iteracje,marker = '.',color = 'blue')
-    plt.title('Kat')
+    sns.scatterplot(y = centrum_r,x = iteracje,marker = '.',color = 'red')
+    sns.scatterplot(y = centrum_g,x = iteracje,marker = '.',color = 'green')
+    sns.scatterplot(y = centrum_b,x = iteracje,marker = '.',color = 'blue')
+
+#
     
     
     centrum_r1 = []
     centrum_g1 = []
     centrum_b1 = []
     
-    kat_r1 = []
-    kat_g1 = []
-    kat_b1 = []
+    kat_r1_prawyGorny = []
+    kat_g1_prawyGorny = []
+    kat_b1_prawyGorny = []
+    
+    kat_r1_prawyDolny = []
+    kat_g1_prawyDolny = []
+    kat_b1_prawyDolny = []
+    
+    kat_r1_lewyDolny = []
+    kat_g1_lewyDolny = []
+    kat_b1_lewyDolny = []
+    
+    kat_r1_lewyGorny = []
+    kat_g1_lewyGorny = []
+    kat_b1_lewyGorny = []
 
     
-    srednia_centrum = np.array(srednia_centrum)
-    
+
+            
     
     j = seria - 1
     licznik = 0
     
     for i in range(0,len(t)):
+        
         centrum_r1.append(np.mean(centrum_r[licznik:licznik+j]))
         centrum_g1.append(np.mean(centrum_g[licznik:licznik+j]))
         centrum_b1.append(np.mean(centrum_b[licznik:licznik+j]))
-        kat_r1.append(np.mean(kat_r[licznik:licznik+j]))
-        kat_g1.append(np.mean(kat_g[licznik:licznik+j]))
-        kat_b1.append(np.mean(kat_b[licznik:licznik+j]))
+        
+        kat_r1_prawyGorny.append(np.mean(kat_r_prawyGorny[licznik:licznik+j]))
+        kat_g1_prawyGorny.append(np.mean(kat_g_prawyGorny[licznik:licznik+j]))
+        kat_b1_prawyGorny.append(np.mean(kat_b_prawyGorny[licznik:licznik+j]))
+        
+        
+        kat_r1_prawyDolny.append(np.mean(kat_r_prawyDolny[licznik:licznik+j]))
+        kat_g1_prawyDolny.append(np.mean(kat_g_prawyDolny[licznik:licznik+j]))
+        kat_b1_prawyDolny.append(np.mean(kat_b_prawyDolny[licznik:licznik+j]))
+        
+        kat_r1_lewyDolny.append(np.mean(kat_r_lewyDolny[licznik:licznik+j]))
+        kat_g1_lewyDolny.append(np.mean(kat_g_lewyDolny[licznik:licznik+j]))
+        kat_b1_lewyDolny.append(np.mean(kat_b_lewyDolny[licznik:licznik+j]))
+        
+        kat_r1_lewyGorny.append(np.mean(kat_r_lewyGorny[licznik:licznik+j]))
+        kat_g1_lewyGorny.append(np.mean(kat_g_lewyGorny[licznik:licznik+j]))
+        kat_b1_lewyGorny.append(np.mean(kat_b_lewyGorny[licznik:licznik+j]))
+        
+        
+        
+        
         licznik = licznik + seria 
         
-        
-    return srednia_centrum,srednia_kata,centrum_r1,centrum_g1,centrum_b1,kat_r1,kat_g1,kat_b1
+    katy_r = [kat_r1_prawyGorny,kat_r1_prawyDolny,kat_r1_lewyDolny,kat_r1_lewyGorny]
+    katy_g =[kat_g1_prawyGorny,kat_g1_prawyDolny,kat_g1_lewyDolny,kat_g1_lewyGorny]
+    katy_b = [kat_b1_prawyGorny,kat_b1_prawyDolny,kat_b1_lewyDolny,kat_b1_lewyGorny]
+    return srednia_centrum,centrum_r1,centrum_g1,centrum_b1,katy_r,katy_g,katy_b
 
 
 
@@ -139,32 +269,132 @@ logt = list(logt)
 
 
 
-plt.figure(figsize=(15,6))
-plt.scatter(y =y[2] ,x = logt,marker = 'x',color = 'red')
-plt.scatter(y = y[3],x = logt,marker = 'x',color = 'green')
-plt.scatter(y = y[4],x = logt,marker = 'x',color = 'blue')
-
-
-plt.figure(figsize=(15,6))
-plt.scatter(y =y[2] ,x = logt,marker = 'x',color = 'red')
-
-
-plt.figure(figsize=(15,6))
-plt.scatter(y = y[4],x = logt,marker = 'x',color = 'green')
-
-plt.figure(figsize=(15,6))
-plt.scatter(y = y[7],x = logt,marker = 'x',color = 'blue')
-
-
-plt.figure(figsize=(15,6))
-plt.scatter(y = y[4],x = logt,marker = 'x',color = 'blue')
-plt.scatter(y = y[7],x = logt,marker = 'x',color = 'red' )
+plt.figure(figsize=(15,11))
+plt.title('Kanały RGB dla centrum obrazu ')
+plt.scatter(y =y[1] ,x = logt,marker = 'x',color = 'red')
+plt.scatter(y = y[2],x = logt,marker = 'x',color = 'green')
+plt.scatter(y = y[3],x = logt,marker = 'x',color = 'blue')
+plt.ylabel('Wartość piksela')
+plt.xlabel('log2(t/t0)')
+plt.savefig('plots/centrum_obrazuRGB.png')
 
 
 
 
 
 
+plt.figure(figsize=(15,11))
+plt.title('Kanały R dla centrum obrazu ')
+plt.scatter(y =y[1] ,x = logt,marker = 'x',color = 'red')
+plt.ylabel('Wartość piksela')
+plt.xlabel('log2(t/t0)')
+plt.savefig('plots/centrum_obrazuR.png')
+
+
+
+
+plt.figure(figsize=(15,11))
+plt.title('Kanały G dla centrum obrazu ')
+plt.scatter(y = y[2],x = logt,marker = 'x',color = 'green')
+plt.ylabel('Wartość piksela')
+plt.xlabel('log2(t/t0)')
+plt.savefig('plots/centrum_obrazuG.png')
+
+
+
+
+plt.figure(figsize=(15,11))
+plt.title('Kanały B dla centrum obrazu ')
+plt.scatter(y = y[3],x = logt,marker = 'x',color = 'blue')
+plt.ylabel('Wartość piksela')
+plt.xlabel('log2(t/t0)')
+plt.savefig('plots/centrum_obrazuB.png')
+
+
+
+
+
+
+plt.figure(figsize=(15,11))
+plt.title('Kanał czerwony centrum obrazu porównanie z kątami obrazu ')
+plt.scatter(y = y[1],x = logt,marker = 'x',color = 'red')
+plt.scatter(y = y[4][0],x = logt,marker = 'x',color = 'black' )
+plt.scatter(y = y[4][1],x = logt,marker = 'x',color = 'blue' )
+plt.scatter(y = y[4][2],x = logt,marker = 'x',color = 'orange' )
+plt.scatter(y = y[4][3],x = logt,marker = 'x',color = 'green' )
+plt.legend(labels=['Centrum obrazu','Kąt prawy górny',"Kąt prawy dolny","Kąt lewy dolny ","Kąt lewy gorny"])
+plt.ylabel('Wartość piksela')
+plt.xlabel('log2(t/t0)')
+plt.savefig('plots/centrum_obrazuVSkatR.png')
+
+
+
+
+
+plt.figure(figsize=(15,11))
+plt.title('Kanał zielony centrum obrazu porównanie z kątami obrazu ')
+plt.scatter(y = y[2],x = logt,marker = 'x',color = 'red')
+plt.scatter(y = y[5][0],x = logt,marker = 'x',color = 'black' )
+plt.scatter(y = y[5][1],x = logt,marker = 'x',color = 'blue' )
+plt.scatter(y = y[5][2],x = logt,marker = 'x',color = 'orange' )
+plt.scatter(y = y[5][3],x = logt,marker = 'x',color = 'green' )
+plt.legend(labels=['Centrum obrazu','Kąt prawy górny',"Kąt prawy dolny","Kąt lewy górny ","Kąt lewy dolny"])
+plt.ylabel('Wartość piksela')
+plt.xlabel('log2(t/t0)')
+plt.savefig('plots/centrum_obrazuVSkatG.png')
+
+
+
+
+plt.figure(figsize=(15,11))
+plt.title('Kanał niebieski centrum obrazu porównanie z kątami obrazu ')
+plt.scatter(y = y[3],x = logt,marker = 'x',color = 'red')
+plt.scatter(y = y[6][0],x = logt,marker = 'x',color = 'black' )
+plt.scatter(y = y[6][1],x = logt,marker = 'x',color = 'blue' )
+plt.scatter(y = y[6][2],x = logt,marker = 'x',color = 'orange' )
+plt.scatter(y = y[6][3],x = logt,marker = 'x',color = 'green' )
+plt.legend(labels=['Centrum obrazu','Kąt prawy górny',"Kąt prawy dolny","Kąt lewy górny ","Kąt lewy dolny"])
+plt.ylabel('Wartość piksela')
+plt.xlabel('log2(t/t0)')
+plt.savefig('plots/centrum_obrazuVSkatB.png')
+
+
+
+fig1, axes = plt.subplots(2, 2, figsize=(15, 11))
+fig1.suptitle('Porównanie kanałów RGB z poszczególnych kątów obrazu', fontsize=16)
+
+axes[0,0].scatter(y = y[4][0],x = logt,marker = 'x',color = 'red' )
+axes[0,0].scatter(y = y[5][0],x = logt,marker = 'x',color = 'green' )
+axes[0,0].scatter(y = y[6][0],x = logt,marker = 'x',color = 'blue' )
+axes[0,0].legend(labels=['R','G',"B"])
+axes[0,0].set_ylabel('Wartość piksela')
+axes[0,0].set_xlabel('log2(t/t0)')
+axes[0,0].set_title("Kąt prawy górny")
+
+axes[0,1].scatter(y = y[4][1],x = logt,marker = 'x',color = 'red' )
+axes[0,1].scatter(y = y[5][1],x = logt,marker = 'x',color = 'green' )
+axes[0,1].scatter(y = y[6][1],x = logt,marker = 'x',color = 'blue' )
+axes[0,1].legend(labels=['R','G',"B"])
+axes[0,1].set_ylabel('Wartość piksela')
+axes[0,1].set_xlabel('log2(t/t0)')
+axes[0,1].set_title("Kąt prawy dolny")
+
+axes[1,0].scatter(y = y[4][2],x = logt,marker = 'x',color = 'red' )
+axes[1,0].scatter(y = y[5][2],x = logt,marker = 'x',color = 'green' )
+axes[1,0].scatter(y = y[6][2],x = logt,marker = 'x',color = 'blue' )
+axes[1,0].legend(labels=['R','G',"B"])
+axes[1,0].set_ylabel('Wartość piksela')
+axes[1,0].set_xlabel('log2(t/t0)')
+axes[1,0].set_title("Kąt lewy dolny")
+
+axes[1,1].scatter(y = y[4][3],x = logt,marker = 'x',color = 'red' )
+axes[1,1].scatter(y = y[5][3],x = logt,marker = 'x',color = 'green' )
+axes[1,1].scatter(y = y[6][3],x = logt,marker = 'x',color = 'blue' )
+axes[1,1].legend(labels=['R','G',"B"])
+axes[1,1].set_ylabel('Wartość piksela')
+axes[1,1].set_xlabel('log2(t/t0)')
+axes[1,1].set_title("Kąt lewy gorny")
+plt.savefig('plots/kątyObrazuRGB.png')
 
 
 
