@@ -1,18 +1,11 @@
 import nd2
 from matplotlib import pyplot as plt
-import cv2
 import numpy as np
-from PIL import Image
 import seaborn as sns
 import math
+import os
 
-f = nd2.ND2File('nowa_kamera_20.07/seria 2/test068.nd2')
-f = np.array(f)
-f2 = f[0]
-f1 = f2[:,:,1]
-leng = len(f[0])
 
-box = f1[900-100:900,1280-100:1280]
 
 
 def srednia(img):
@@ -132,7 +125,7 @@ def srednia_kat_lewyDolny(img):
 
 
 
-def main(numer,ilosc,seria,sciezka,t):
+def main(ilosc,seria,sciezka,t):
     
     iteracje = [i for i in range(1,ilosc+1)]
     
@@ -141,13 +134,14 @@ def main(numer,ilosc,seria,sciezka,t):
     srednia_kata_prawyDolny= []
     srednia_kata_lewyGorny= []
     srednia_kata_lewyDolny = []
-
+    pliki = sorted(os.listdir(sciezka))
+    if '.DS_Store' in pliki:
+        pliki.remove('.DS_Store')
     
     for i in range(0,len(t)):
-        wartosc = numer + i
-        obraz = nd2.imread(f'{sciezka}/test0{wartosc}.nd2')
+        obraz = nd2.imread(f'{sciezka}/{pliki[i]}')
         obraz1 = np.array(obraz)
-        for j in range(len(obraz1)):
+        for j in range(0,seria):
             ob = obraz1[j]
             srednia_centrum.append(srednia(ob))
             srednia_kata_prawyGorny.append(srednia_kat_prawyGorny(ob))
@@ -259,142 +253,140 @@ def main(numer,ilosc,seria,sciezka,t):
 
 
 
-t = [1,2,4,6,8,10,20,40,60,80,100,200,400,600,800,1000,2000,4000,6000,8000,10000]
-y = main(47,210,10,'nowa_kamera_20.07/seria 2',t)
-
-krok = 2
-
-logt = map(lambda x: math.log2(x/krok),t)
-logt = list(logt)
 
 
 
-plt.figure(figsize=(15,11))
-plt.title('Kanały RGB dla centrum obrazu ')
-plt.scatter(y =y[1] ,x = logt,marker = 'x',color = 'red')
-plt.scatter(y = y[2],x = logt,marker = 'x',color = 'green')
-plt.scatter(y = y[3],x = logt,marker = 'x',color = 'blue')
-plt.ylabel('Wartość piksela')
-plt.xlabel('log2(t/t0)')
-plt.savefig('plots/centrum_obrazuRGB.png')
+def display_plots(y,t,krok,nazwaPliku):
+    
+    logt = map(lambda x: math.log2(x/krok),t)
+    logt = list(logt)
 
-
-
-
-
-
-plt.figure(figsize=(15,11))
-plt.title('Kanały R dla centrum obrazu ')
-plt.scatter(y =y[1] ,x = logt,marker = 'x',color = 'red')
-plt.ylabel('Wartość piksela')
-plt.xlabel('log2(t/t0)')
-plt.savefig('plots/centrum_obrazuR.png')
-
-
-
-
-plt.figure(figsize=(15,11))
-plt.title('Kanały G dla centrum obrazu ')
-plt.scatter(y = y[2],x = logt,marker = 'x',color = 'green')
-plt.ylabel('Wartość piksela')
-plt.xlabel('log2(t/t0)')
-plt.savefig('plots/centrum_obrazuG.png')
-
-
-
-
-plt.figure(figsize=(15,11))
-plt.title('Kanały B dla centrum obrazu ')
-plt.scatter(y = y[3],x = logt,marker = 'x',color = 'blue')
-plt.ylabel('Wartość piksela')
-plt.xlabel('log2(t/t0)')
-plt.savefig('plots/centrum_obrazuB.png')
-
-
-
-
-
-
-plt.figure(figsize=(15,11))
-plt.title('Kanał czerwony centrum obrazu porównanie z kątami obrazu ')
-plt.scatter(y = y[1],x = logt,marker = 'x',color = 'red')
-plt.scatter(y = y[4][0],x = logt,marker = 'x',color = 'black' )
-plt.scatter(y = y[4][1],x = logt,marker = 'x',color = 'blue' )
-plt.scatter(y = y[4][2],x = logt,marker = 'x',color = 'orange' )
-plt.scatter(y = y[4][3],x = logt,marker = 'x',color = 'green' )
-plt.legend(labels=['Centrum obrazu','Kąt prawy górny',"Kąt prawy dolny","Kąt lewy dolny ","Kąt lewy gorny"])
-plt.ylabel('Wartość piksela')
-plt.xlabel('log2(t/t0)')
-plt.savefig('plots/centrum_obrazuVSkatR.png')
-
-
-
-
-
-plt.figure(figsize=(15,11))
-plt.title('Kanał zielony centrum obrazu porównanie z kątami obrazu ')
-plt.scatter(y = y[2],x = logt,marker = 'x',color = 'red')
-plt.scatter(y = y[5][0],x = logt,marker = 'x',color = 'black' )
-plt.scatter(y = y[5][1],x = logt,marker = 'x',color = 'blue' )
-plt.scatter(y = y[5][2],x = logt,marker = 'x',color = 'orange' )
-plt.scatter(y = y[5][3],x = logt,marker = 'x',color = 'green' )
-plt.legend(labels=['Centrum obrazu','Kąt prawy górny',"Kąt prawy dolny","Kąt lewy górny ","Kąt lewy dolny"])
-plt.ylabel('Wartość piksela')
-plt.xlabel('log2(t/t0)')
-plt.savefig('plots/centrum_obrazuVSkatG.png')
-
-
-
-
-plt.figure(figsize=(15,11))
-plt.title('Kanał niebieski centrum obrazu porównanie z kątami obrazu ')
-plt.scatter(y = y[3],x = logt,marker = 'x',color = 'red')
-plt.scatter(y = y[6][0],x = logt,marker = 'x',color = 'black' )
-plt.scatter(y = y[6][1],x = logt,marker = 'x',color = 'blue' )
-plt.scatter(y = y[6][2],x = logt,marker = 'x',color = 'orange' )
-plt.scatter(y = y[6][3],x = logt,marker = 'x',color = 'green' )
-plt.legend(labels=['Centrum obrazu','Kąt prawy górny',"Kąt prawy dolny","Kąt lewy górny ","Kąt lewy dolny"])
-plt.ylabel('Wartość piksela')
-plt.xlabel('log2(t/t0)')
-plt.savefig('plots/centrum_obrazuVSkatB.png')
-
-
-
-fig1, axes = plt.subplots(2, 2, figsize=(15, 11))
-fig1.suptitle('Porównanie kanałów RGB z poszczególnych kątów obrazu', fontsize=16)
-
-axes[0,0].scatter(y = y[4][0],x = logt,marker = 'x',color = 'red' )
-axes[0,0].scatter(y = y[5][0],x = logt,marker = 'x',color = 'green' )
-axes[0,0].scatter(y = y[6][0],x = logt,marker = 'x',color = 'blue' )
-axes[0,0].legend(labels=['R','G',"B"])
-axes[0,0].set_ylabel('Wartość piksela')
-axes[0,0].set_xlabel('log2(t/t0)')
-axes[0,0].set_title("Kąt prawy górny")
-
-axes[0,1].scatter(y = y[4][1],x = logt,marker = 'x',color = 'red' )
-axes[0,1].scatter(y = y[5][1],x = logt,marker = 'x',color = 'green' )
-axes[0,1].scatter(y = y[6][1],x = logt,marker = 'x',color = 'blue' )
-axes[0,1].legend(labels=['R','G',"B"])
-axes[0,1].set_ylabel('Wartość piksela')
-axes[0,1].set_xlabel('log2(t/t0)')
-axes[0,1].set_title("Kąt prawy dolny")
-
-axes[1,0].scatter(y = y[4][2],x = logt,marker = 'x',color = 'red' )
-axes[1,0].scatter(y = y[5][2],x = logt,marker = 'x',color = 'green' )
-axes[1,0].scatter(y = y[6][2],x = logt,marker = 'x',color = 'blue' )
-axes[1,0].legend(labels=['R','G',"B"])
-axes[1,0].set_ylabel('Wartość piksela')
-axes[1,0].set_xlabel('log2(t/t0)')
-axes[1,0].set_title("Kąt lewy dolny")
-
-axes[1,1].scatter(y = y[4][3],x = logt,marker = 'x',color = 'red' )
-axes[1,1].scatter(y = y[5][3],x = logt,marker = 'x',color = 'green' )
-axes[1,1].scatter(y = y[6][3],x = logt,marker = 'x',color = 'blue' )
-axes[1,1].legend(labels=['R','G',"B"])
-axes[1,1].set_ylabel('Wartość piksela')
-axes[1,1].set_xlabel('log2(t/t0)')
-axes[1,1].set_title("Kąt lewy gorny")
-plt.savefig('plots/kątyObrazuRGB.png')
+    plt.figure(figsize=(15,11))
+    plt.title('Kanały RGB dla centrum obrazu ')
+    plt.scatter(y =y[1] ,x = logt,marker = 'x',color = 'red')
+    plt.scatter(y = y[2],x = logt,marker = 'x',color = 'green')
+    plt.scatter(y = y[3],x = logt,marker = 'x',color = 'blue')
+    plt.ylabel('Wartość piksela')
+    plt.xlabel('log2(t/t0)')
+    plt.savefig(f'plots/centrum_obrazuRGB_{nazwaPliku}.png')
+    
+    
+    
+    
+    
+    
+    plt.figure(figsize=(15,11))
+    plt.title('Kanały R dla centrum obrazu ')
+    plt.scatter(y =y[1] ,x = logt,marker = 'x',color = 'red')
+    plt.ylabel('Wartość piksela')
+    plt.xlabel('log2(t/t0)')
+    plt.savefig(f'plots/centrum_obrazuR_{nazwaPliku}.png')
+    
+    
+    
+    
+    plt.figure(figsize=(15,11))
+    plt.title('Kanały G dla centrum obrazu ')
+    plt.scatter(y = y[2],x = logt,marker = 'x',color = 'green')
+    plt.ylabel('Wartość piksela')
+    plt.xlabel('log2(t/t0)')
+    plt.savefig(f'plots/centrum_obrazuG_{nazwaPliku}.png')
+    
+    
+    
+    
+    plt.figure(figsize=(15,11))
+    plt.title('Kanały B dla centrum obrazu ')
+    plt.scatter(y = y[3],x = logt,marker = 'x',color = 'blue')
+    plt.ylabel('Wartość piksela')
+    plt.xlabel('log2(t/t0)')
+    plt.savefig(f'plots/centrum_obrazuB_{nazwaPliku}.png')
+    
+    
+    
+    
+    
+    
+    plt.figure(figsize=(15,11))
+    plt.title('Kanał czerwony centrum obrazu porównanie z kątami obrazu ')
+    plt.scatter(y = y[1],x = logt,marker = 'x',color = 'red')
+    plt.scatter(y = y[4][0],x = logt,marker = 'x',color = 'black' )
+    plt.scatter(y = y[4][1],x = logt,marker = 'x',color = 'blue' )
+    plt.scatter(y = y[4][2],x = logt,marker = 'x',color = 'orange' )
+    plt.scatter(y = y[4][3],x = logt,marker = 'x',color = 'green' )
+    plt.legend(labels=['Centrum obrazu','Kąt prawy górny',"Kąt prawy dolny","Kąt lewy dolny ","Kąt lewy gorny"])
+    plt.ylabel('Wartość piksela')
+    plt.xlabel('log2(t/t0)')
+    plt.savefig(f'plots/centrum_obrazuVSkatR_{nazwaPliku}.png')
+    
+    
+    
+    
+    
+    plt.figure(figsize=(15,11))
+    plt.title('Kanał zielony centrum obrazu porównanie z kątami obrazu ')
+    plt.scatter(y = y[2],x = logt,marker = 'x',color = 'red')
+    plt.scatter(y = y[5][0],x = logt,marker = 'x',color = 'black' )
+    plt.scatter(y = y[5][1],x = logt,marker = 'x',color = 'blue' )
+    plt.scatter(y = y[5][2],x = logt,marker = 'x',color = 'orange' )
+    plt.scatter(y = y[5][3],x = logt,marker = 'x',color = 'green' )
+    plt.legend(labels=['Centrum obrazu','Kąt prawy górny',"Kąt prawy dolny","Kąt lewy górny ","Kąt lewy dolny"])
+    plt.ylabel('Wartość piksela')
+    plt.xlabel('log2(t/t0)')
+    plt.savefig(f'plots/centrum_obrazuVSkatG_{nazwaPliku}.png')
+    
+    
+    
+    
+    plt.figure(figsize=(15,11))
+    plt.title('Kanał niebieski centrum obrazu porównanie z kątami obrazu ')
+    plt.scatter(y = y[3],x = logt,marker = 'x',color = 'red')
+    plt.scatter(y = y[6][0],x = logt,marker = 'x',color = 'black' )
+    plt.scatter(y = y[6][1],x = logt,marker = 'x',color = 'blue' )
+    plt.scatter(y = y[6][2],x = logt,marker = 'x',color = 'orange' )
+    plt.scatter(y = y[6][3],x = logt,marker = 'x',color = 'green' )
+    plt.legend(labels=['Centrum obrazu','Kąt prawy górny',"Kąt prawy dolny","Kąt lewy górny ","Kąt lewy dolny"])
+    plt.ylabel('Wartość piksela')
+    plt.xlabel('log2(t/t0)')
+    plt.savefig(f'plots/centrum_obrazuVSkatB_{nazwaPliku}.png')
+    
+    
+    
+    fig1, axes = plt.subplots(2, 2, figsize=(15, 11))
+    fig1.suptitle('Porównanie kanałów RGB z poszczególnych kątów obrazu', fontsize=16)
+    
+    axes[0,0].scatter(y = y[4][0],x = logt,marker = 'x',color = 'red' )
+    axes[0,0].scatter(y = y[5][0],x = logt,marker = 'x',color = 'green' )
+    axes[0,0].scatter(y = y[6][0],x = logt,marker = 'x',color = 'blue' )
+    axes[0,0].legend(labels=['R','G',"B"])
+    axes[0,0].set_ylabel('Wartość piksela')
+    axes[0,0].set_xlabel('log2(t/t0)')
+    axes[0,0].set_title("Kąt prawy górny")
+    
+    axes[0,1].scatter(y = y[4][1],x = logt,marker = 'x',color = 'red' )
+    axes[0,1].scatter(y = y[5][1],x = logt,marker = 'x',color = 'green' )
+    axes[0,1].scatter(y = y[6][1],x = logt,marker = 'x',color = 'blue' )
+    axes[0,1].legend(labels=['R','G',"B"])
+    axes[0,1].set_ylabel('Wartość piksela')
+    axes[0,1].set_xlabel('log2(t/t0)')
+    axes[0,1].set_title("Kąt prawy dolny")
+    
+    axes[1,0].scatter(y = y[4][2],x = logt,marker = 'x',color = 'red' )
+    axes[1,0].scatter(y = y[5][2],x = logt,marker = 'x',color = 'green' )
+    axes[1,0].scatter(y = y[6][2],x = logt,marker = 'x',color = 'blue' )
+    axes[1,0].legend(labels=['R','G',"B"])
+    axes[1,0].set_ylabel('Wartość piksela')
+    axes[1,0].set_xlabel('log2(t/t0)')
+    axes[1,0].set_title("Kąt lewy dolny")
+    
+    axes[1,1].scatter(y = y[4][3],x = logt,marker = 'x',color = 'red' )
+    axes[1,1].scatter(y = y[5][3],x = logt,marker = 'x',color = 'green' )
+    axes[1,1].scatter(y = y[6][3],x = logt,marker = 'x',color = 'blue' )
+    axes[1,1].legend(labels=['R','G',"B"])
+    axes[1,1].set_ylabel('Wartość piksela')
+    axes[1,1].set_xlabel('log2(t/t0)')
+    axes[1,1].set_title("Kąt lewy gorny")
+    plt.savefig(f'plots/kątyObrazuRGB_{nazwaPliku}.png')
 
 
 

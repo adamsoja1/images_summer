@@ -8,7 +8,8 @@ import math
 from for_nd2_files import main
 from scipy.optimize import curve_fit
 
-
+f = nd2.ND2File('seria 3 ciemny/test070.nd2')
+f3 = np.array(f)
 t = [1,2,4,6,8,10,20,40,60,80,100,200,400,600,800,1000,2000,4000,6000,8000,10000]
 krok = 8
 
