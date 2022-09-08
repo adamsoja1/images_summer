@@ -12,9 +12,9 @@ def srednia(img):
     x = np.shape(img)[1]
     y = np.shape(img)[0]
     
-    red = img[:,:,0]
+    red = img[:,:,2]
     green = img[:,:,1]
-    blue = img[:,:,2]
+    blue = img[:,:,0]
     
     cent1 = int(round(x/2))
     cent2 = int(round(y/2))
@@ -37,9 +37,9 @@ def srednia_kat_prawyGorny(img):
     x = np.shape(img)[1]
     y = np.shape(img)[0]
     
-    red = img[:,:,0]
+    red = img[:,:,2]
     green = img[:,:,1]
-    blue = img[:,:,2]
+    blue = img[:,:,0]
     
     box_r = red[1:100,x-100:x]
     box_g = green[1:100,x-100:x]
@@ -58,9 +58,9 @@ def srednia_kat_prawyDolny(img):
     x = np.shape(img)[1]
     y = np.shape(img)[0]
     
-    red = img[:,:,0]
+    red = img[:,:,2]
     green = img[:,:,1]
-    blue = img[:,:,2]
+    blue = img[:,:,0]
     
     box_r = red[y-100:y,x-100:x]
     box_g = green[y-100:y,x-100:x]
@@ -80,9 +80,9 @@ def srednia_kat_lewyGorny(img):
     x = np.shape(img)[1]
     y = np.shape(img)[0]
     
-    red = img[:,:,0]
+    red = img[:,:,2]
     green = img[:,:,1]
-    blue = img[:,:,2]
+    blue = img[:,:,0]
     
     box_r = red[1:100,1:100]
     box_g = green[1:100,1:100]
@@ -101,9 +101,9 @@ def srednia_kat_lewyDolny(img):
     x = np.shape(img)[1]
     y = np.shape(img)[0]
     
-    red = img[:,:,0]
+    red = img[:,:,2]
     green = img[:,:,1]
-    blue = img[:,:,2]
+    blue = img[:,:,0]
     
     box_r = red[y-100:y,1:100]
     box_g = green[y-100:y,1:100]
@@ -256,13 +256,13 @@ def main(ilosc,seria,sciezka,t):
 
 
 
-def display_plots(y,t,krok,nazwaPliku):
+def display_plots(y,t,krok,nazwaPliku,nazwa):
     
     logt = map(lambda x: math.log2(x/krok),t)
     logt = list(logt)
 
     plt.figure(figsize=(15,11))
-    plt.title('Kanały RGB dla centrum obrazu ')
+    plt.title(f'Kanały RGB dla centrum obrazu ({nazwa}) ')
     plt.scatter(y =y[1] ,x = logt,marker = 'x',color = 'red')
     plt.scatter(y = y[2],x = logt,marker = 'x',color = 'green')
     plt.scatter(y = y[3],x = logt,marker = 'x',color = 'blue')
@@ -276,7 +276,7 @@ def display_plots(y,t,krok,nazwaPliku):
     
     
     plt.figure(figsize=(15,11))
-    plt.title('Kanały R dla centrum obrazu ')
+    plt.title(f'Kanały R dla centrum obrazu ({nazwa})')
     plt.scatter(y =y[1] ,x = logt,marker = 'x',color = 'red')
     plt.ylabel('Wartość piksela')
     plt.xlabel('log2(t/t0)')
@@ -286,7 +286,7 @@ def display_plots(y,t,krok,nazwaPliku):
     
     
     plt.figure(figsize=(15,11))
-    plt.title('Kanały G dla centrum obrazu ')
+    plt.title(f'Kanały G dla centrum obrazu  ({nazwa})')
     plt.scatter(y = y[2],x = logt,marker = 'x',color = 'green')
     plt.ylabel('Wartość piksela')
     plt.xlabel('log2(t/t0)')
@@ -296,7 +296,7 @@ def display_plots(y,t,krok,nazwaPliku):
     
     
     plt.figure(figsize=(15,11))
-    plt.title('Kanały B dla centrum obrazu ')
+    plt.title(f'Kanały B dla centrum obrazu ({nazwa}) ')
     plt.scatter(y = y[3],x = logt,marker = 'x',color = 'blue')
     plt.ylabel('Wartość piksela')
     plt.xlabel('log2(t/t0)')
@@ -308,7 +308,7 @@ def display_plots(y,t,krok,nazwaPliku):
     
     
     plt.figure(figsize=(15,11))
-    plt.title('Kanał czerwony centrum obrazu porównanie z kątami obrazu ')
+    plt.title(f'Kanał czerwony centrum obrazu porównanie z kątami obrazu ({nazwa}) ')
     plt.scatter(y = y[1],x = logt,marker = 'x',color = 'red')
     plt.scatter(y = y[4][0],x = logt,marker = 'x',color = 'black' )
     plt.scatter(y = y[4][1],x = logt,marker = 'x',color = 'blue' )
@@ -324,7 +324,7 @@ def display_plots(y,t,krok,nazwaPliku):
     
     
     plt.figure(figsize=(15,11))
-    plt.title('Kanał zielony centrum obrazu porównanie z kątami obrazu ')
+    plt.title(f'Kanał zielony centrum obrazu porównanie z kątami obrazu ({nazwa}) ')
     plt.scatter(y = y[2],x = logt,marker = 'x',color = 'red')
     plt.scatter(y = y[5][0],x = logt,marker = 'x',color = 'black' )
     plt.scatter(y = y[5][1],x = logt,marker = 'x',color = 'blue' )
@@ -339,7 +339,7 @@ def display_plots(y,t,krok,nazwaPliku):
     
     
     plt.figure(figsize=(15,11))
-    plt.title('Kanał niebieski centrum obrazu porównanie z kątami obrazu ')
+    plt.title(f'Kanał niebieski centrum obrazu porównanie z kątami obrazu ({nazwa}) ')
     plt.scatter(y = y[3],x = logt,marker = 'x',color = 'red')
     plt.scatter(y = y[6][0],x = logt,marker = 'x',color = 'black' )
     plt.scatter(y = y[6][1],x = logt,marker = 'x',color = 'blue' )
@@ -353,7 +353,7 @@ def display_plots(y,t,krok,nazwaPliku):
     
     
     fig1, axes = plt.subplots(2, 2, figsize=(15, 11))
-    fig1.suptitle('Porównanie kanałów RGB z poszczególnych kątów obrazu', fontsize=16)
+    fig1.suptitle(f'Porównanie kanałów RGB z poszczególnych kątów obrazu ({nazwa})', fontsize=16)
     
     axes[0,0].scatter(y = y[4][0],x = logt,marker = 'x',color = 'red' )
     axes[0,0].scatter(y = y[5][0],x = logt,marker = 'x',color = 'green' )
